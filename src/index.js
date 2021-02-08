@@ -2,20 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
 import store from './store';
-import { getReadableStories } from './selectors/story';
-import { STORY_ARCHIVE } from './constants/actionTypes';
+import { Provider } from 'react-redux';
+
 import './index.css';
 
-function render() {
-  ReactDOM.render(
-    <React.StrictMode>
-      <App
-        stories={getReadableStories(store.getState())}
-        onArchive={id => store.dispatch({ type: STORY_ARCHIVE, id })}
-      />
-    </React.StrictMode>,
-    document.getElementById('root')
-  );
-}
-store.subscribe(render);
-render();
+ReactDOM.render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>,
+  document.getElementById('root')
+);

@@ -1,5 +1,8 @@
 import React from 'react';
 import Story from './Story';
+import { connect } from 'react-redux';
+import { doArchiveStory } from '../actions/archive';
+import { getReadableStories, getFetchError } from '../selectors/story';
 import './Stories.css';
 
 const COLUMNS = {
@@ -23,10 +26,12 @@ const COLUMNS = {
     width: '10%',
   },
 };
-const Stories = ({ stories, onArchive }) => {
+const Stories = ({ stories, onArchive, error }) => {
   return (
     <div className="stories">
       <StoriesHeader columns={COLUMNS} />
+      {error && <p className="error">Something went wrong ...</p>}
+
       {(stories || []).map(story => {
         return <Story key={story.objectID} story={story} columns={COLUMNS} onArchive={onArchive} />;
       })}
@@ -36,12 +41,21 @@ const Stories = ({ stories, onArchive }) => {
 
 const StoriesHeader = ({ columns }) => (
   <div className="stories-header">
-    {Object.keys(COLUMNS).map(key => (
-      <span key={key} style={{ width: COLUMNS[key].width }}>
-        {COLUMNS[key].label}
+    {Object.keys(columns).map(key => (
+      <span key={key} style={{ width: columns[key].width }}>
+        {columns[key].label}
       </span>
     ))}
   </div>
 );
 
-export default Stories;
+const mapStateToProps = state => ({
+  stories: getReadableStories(state),
+  error: getFetchError(state),
+});
+
+const mapDispatchToProps = dispatch => ({
+  onArchive: id => dispatch(doArchiveStory(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Stories);

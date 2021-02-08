@@ -1,5 +1,7 @@
 import React from 'react';
 import { ButtonInLine } from './Button';
+import { connect } from 'react-redux';
+import { doArchiveStory } from '../actions/archive';
 import './Story.css';
 const Story = ({ story, columns, onArchive }) => {
   const { title, url, author, num_comments, points, objectID } = story;
@@ -12,10 +14,12 @@ const Story = ({ story, columns, onArchive }) => {
       <span style={{ width: columns.comments.width }}>{num_comments}</span>
       <span style={{ width: columns.points.width }}>{points}</span>
       <span style={{ width: columns.archive.width }}>
-        <ButtonInLine onClick={onArchive}>Archive</ButtonInLine>
+        <ButtonInLine onClick={() => onArchive(objectID)}>Archive</ButtonInLine>
       </span>
     </div>
   );
 };
-
-export default Story;
+const mapDispatchToProps = dispatch => ({
+  onArchive: id => dispatch(doArchiveStory(id)),
+});
+export default connect(null, mapDispatchToProps)(Story);

@@ -1,10 +1,15 @@
 import React from 'react';
 import Stories from './Stories';
+import SearchStories from './SearchStories';
 import './App.css';
-const App = ({ stories, onArchive }) => {
+const App = () => {
+  console.log(App);
   return (
     <div className="app">
-      <Stories stories={stories} onArchive={onArchive} />
+      <div className="interactions">
+        <SearchStories />
+      </div>
+      <Stories />
     </div>
   );
 };
