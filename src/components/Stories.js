@@ -24,7 +24,6 @@ const COLUMNS = {
   },
 };
 const Stories = ({ stories, onArchive }) => {
-  console.log(stories);
   return (
     <div className="stories">
       <StoriesHeader columns={COLUMNS} />
